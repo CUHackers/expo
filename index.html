@@ -6,14 +6,14 @@ Run a find replace on:
 - DevpostURL -> Your Devpost URL: http://pennappsxii.devpost.com
 - HackathonName -> Your Hackathon Name -> PennApps XII
 
-You can also use your own favico or Hackathon logo/header.
+You can also use your own favicon or Hackathon logo/header.
 
 -->
 
 <html>
 <head>
   <meta charset='utf-8'>
-  <title>HackathonName Expo</title>
+  <title>CUhackit Expo</title>
 
   <!-- Meta tags to eliminate caching. I don't totally get how these work, so you might not need all of them. cribbed from: http://stackoverflow.com/questions/1341089/using-meta-tags-to-turn-off-caching-in-all-browsers-->
   <meta http-equiv="cache-control" content="max-age=0">
@@ -25,7 +25,7 @@ You can also use your own favico or Hackathon logo/header.
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <link href='//fonts.googleapis.com/css?family=Roboto:400,700,900,400italic' rel='stylesheet' type='text/css'>
   <link rel='stylesheet' type='text/css' href='css/style.css'>
-  <link rel="shortcut icon" href="http://nealrs.github.io/devpost-follow-button/icon/devpost-128.png">
+  <link rel="shortcut icon" href="favicon.ico">
   <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
   <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js'></script>
   <script type='text/javascript' src='js/mustache.min.js'></script>
@@ -36,9 +36,7 @@ You can also use your own favico or Hackathon logo/header.
   <div class="container">
     <div id="header">
       <h1>
-        <a href="DevpostURL" title="HackathonName Expo">
-          <img src="http://nealrs.github.io/devpost-follow-button/icon/devpost.svg" style="vertical-align:middle; width:60px;"> HackathonName
-        </a>
+          <img src="favicon.ico" style="vertical-align:middle; width:60px;"> CUhackit 2020
       <h1>
     </div>
     <div id="fullTable"></div>
@@ -46,24 +44,24 @@ You can also use your own favico or Hackathon logo/header.
 
   <script id="template" type="x-tmpl-mustache">
     <div class="search_container">
-      <input class="search" type="search" placeholder="Filter by sponsor prize, project name, category or whatever" id="filter"/>
+      <input class="search" type="search" placeholder="Filter by project name, description, prize, or whatever" id="filter"/>
     </div>
     <table id="expoTable">
       <thead>
         <tr>
           <th class="number">Table</th>
           <th class="name">Project</th>
-          <th class="prize">Sponsor Prizes</th>
-          <th class="cat">Category</th> <!--You can comment out this column if you don't need it-->
+          <th class="description">Description</th>
+          <th class="cat">Category</th>
         </tr>
       </thead>
       <tbody class="list">
         {{#data}}
           <tr>
-            <td class="number">E{{expo}} T{{table}}</td>
-            <td class="name"><a href="{{{link}}}" target="_blank">{{project}}</a></td>
-            <td class="prize">{{sponsors}}</td>
-            <td class="cat">{{category}}</td> <!--You can comment out this column if you don't need it-->
+            <td class="number">{{table}}</td>
+            <td class="name">{{project}}</td>
+            <td class="description">{{description}}</td>
+            <td class="cat">{{category}}</td>
           </tr>
         {{/data}}
       </tbody>
@@ -72,11 +70,7 @@ You can also use your own favico or Hackathon logo/header.
   <br>
   <div id="footer">
 
-    <p>Sponsors, want analytics about who's using your API, what they're building, and where?</p>
-    <p>Organizers, want your own slick expo / table number app?</p>
-    <p>Email <a href="mailto:hackathons@devpost.com"> hackathons@devpost.com</a></p>
-
-    <a href="http://devpost.com"><img src="http://devpost0.assetspost.com/assets/shared/devpost_logo-646bdf6ac6663230947a952f8d354cad.svg" style="height: 30px;"></a>
+    <!-- TODO footer -->
 
   </div>
 
@@ -104,14 +98,16 @@ You can also use your own favico or Hackathon logo/header.
           tableData = results;
 
           // print raw data
-          //console.log(tableData);
+          // console.log(tableData);
           // add commas to sponsor prize data
           for (var x in tableData.data) {
-            var s = tableData.data[x]['sponsors'];
-            tableData.data[x]['sponsors'] = s.replace(/,/ig, ", ");
+            var s = tableData.data[x]['category'];
+            if (s != undefined) {
+              tableData.data[x]['category'] = s.replace(/,/ig, ", ");
+            }
           }
           // print cleaned data
-          console.log(tableData);
+          // console.log(tableData);
 
           // process and render template
           var template = $('#template').html();
@@ -122,7 +118,7 @@ You can also use your own favico or Hackathon logo/header.
 
           // list.js search init
           var listOptions = {
-            valueNames: [ 'number', 'name', 'prize', 'cat' ],
+            valueNames: ['number', 'name', 'cat', 'description'],
             page: 1000000
           };
           var userList = new List('fullTable', listOptions);
